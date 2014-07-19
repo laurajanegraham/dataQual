@@ -9,7 +9,7 @@
 
 ################################################################################
 
-uncertainty.calcs <- function(species.dat, grid.poly, species.col, grid.col, n.rand=100) {
+calcUncertainty <- function(species.dat, grid.poly, species.col, grid.col, n.rand=100) {
   require(rgdal)
   # error checking
   if(!grid.col %in% colnames(species.dat)) stop("Please specify the column containing the grid references")
