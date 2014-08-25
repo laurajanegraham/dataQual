@@ -48,23 +48,35 @@ calcUncertainty <- function(species.dat, grid.poly, species.col, grid.col, n.ran
   }
   
   ### create the results for the output table ###
-  results <- data.frame(grid.ref = NA, clench.slope = NA, clench.a = NA, 
-                                    clench.b = NA, no.records = NA, sp.richness = NA)
+  results <- data.frame(grid_ref = NA, slope = NA, clench_a = NA, 
+                                    clench_b = NA, no_recs = NA, sp_rich = NA)
   i <- 1
   
-  for(grid in names(cc.list)){
-    clench <- nls(mean.species~(a*records)/(1 + b*records), data=cc.list[[grid]], 
-                  start = list(a=1, b=1))
-    
-    clench.slope <- function(x) {
-      coef(clench)[1]/(coef(clench)[2]^2*x^2 + 2*coef(clench)[2]*x + 1)
-    }  
-    results[i, 1] <- grid
-    results[i, 2] <- clench.slope(nrow(cc.list[[grid]]))
-    results[i, 3] <- coef(clench)[1]
-    results[i, 4] <- coef(clench)[2]
-    results[i, 5] <- nrow(cc.list[[grid]])
-    results[i, 6] <- max(cc.list[[grid]][,2])
+  for(grid in grid.list){
+    if(grid %in% names(cc.list)){
+      clench <- nls(mean.species~(a*records)/(1 + b*records), data=cc.list[[grid]], 
+                    start = list(a=1, b=1))
+      
+      clench.slope <- function(x) {
+        coef(clench)[1]/(coef(clench)[2]^2*x^2 + 2*coef(clench)[2]*x + 1)
+      }
+      
+      results[i, 1] <- grid
+      results[i, 2] <- clench.slope(nrow(cc.list[[grid]]))
+      results[i, 3] <- coef(clench)[1]
+      results[i, 4] <- coef(clench)[2]
+      results[i, 5] <- nrow(cc.list[[grid]])
+      results[i, 6] <- max(cc.list[[grid]][,2])
+    } else{
+      grid.dat <- species.dat[species.dat[,grid.col]==grid,species.col] 
+      results[i, 1] <- grid
+      results[i, 2] <- NA
+      results[i, 3] <- NA
+      results[i, 4] <- NA
+      results[i, 5] <- length(grid.dat)
+      results[i, 6] <- length(unique(grid.dat))
+    }
+
     i <- i + 1
   }
   output <- list(results=results, cc.list=cc.list)
