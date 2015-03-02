@@ -40,48 +40,54 @@ gridConvert <- function(input.file, grid.column="location", output.column="conve
            }
 
            # section for 1m grids
-           main <- paste0(substr(grid.1m[,grid.column], 1, 3), substr(grid.1m[,grid.column], 8, 8))
-           X <- substr(grid.1m[,grid.column], 4, 4)
-           Y <- substr(grid.1m[,grid.column], 9, 9)
-           temp <- data.frame(main, X, Y, stringsAsFactors=FALSE)
-           temp$id <- 1:nrow(temp)
-           temp <- merge(temp, dinty.letters)
-           temp <- temp[order(temp$id),]
-           grid.1m[,output.column] <- paste0(temp$main, temp$letter)
-           rm(temp)
-           
+           if(nrow(grid.1m) > 0){
+             main <- paste0(substr(grid.1m[,grid.column], 1, 3), substr(grid.1m[,grid.column], 8, 8))
+             X <- substr(grid.1m[,grid.column], 4, 4)
+             Y <- substr(grid.1m[,grid.column], 9, 9)
+             temp <- data.frame(main, X, Y, stringsAsFactors=FALSE)
+             temp$id <- 1:nrow(temp)
+             temp <- merge(temp, dinty.letters)
+             temp <- temp[order(temp$id),]
+             grid.1m[,output.column] <- paste0(temp$main, temp$letter)
+             rm(temp)
+           }
            # section for 10m grids
-           main <- paste0(substr(grid.10m[,grid.column], 1, 3), substr(grid.10m[,grid.column], 7, 7))
-           X <- substr(grid.10m[,grid.column], 4, 4)
-           Y <- substr(grid.10m[,grid.column], 8, 8)
-           temp <- data.frame(main, X, Y, stringsAsFactors=FALSE)
-           temp$id <- 1:nrow(temp)
-           temp <- merge(temp, dinty.letters)
-           temp <- temp[order(temp$id),]
-           grid.10m[,output.column] <- paste0(temp$main, temp$letter)
-           rm(temp)
+           if(nrow(grid.10m) > 0){
+             main <- paste0(substr(grid.10m[,grid.column], 1, 3), substr(grid.10m[,grid.column], 7, 7))
+             X <- substr(grid.10m[,grid.column], 4, 4)
+             Y <- substr(grid.10m[,grid.column], 8, 8)
+             temp <- data.frame(main, X, Y, stringsAsFactors=FALSE)
+             temp$id <- 1:nrow(temp)
+             temp <- merge(temp, dinty.letters)
+             temp <- temp[order(temp$id),]
+             grid.10m[,output.column] <- paste0(temp$main, temp$letter)
+             rm(temp)
+           }
            
            # section for 100m grids
-           main <- paste0(substr(grid.100m[,grid.column], 1, 3), substr(grid.100m[,grid.column], 6, 6))
-           X <- substr(grid.100m[,grid.column], 4, 4)
-           Y <- substr(grid.100m[,grid.column], 7, 7)
-           temp <- data.frame(main, X, Y, stringsAsFactors=FALSE)
-           temp$id <- 1:nrow(temp)
-           temp <- merge(temp, dinty.letters)
-           temp <- temp[order(temp$id),]
-           grid.100m[,output.column] <- paste0(temp$main, temp$letter)
-           rm(temp)
-           
+           if(nrow(grid.100m) > 0){
+             main <- paste0(substr(grid.100m[,grid.column], 1, 3), substr(grid.100m[,grid.column], 6, 6))
+             X <- substr(grid.100m[,grid.column], 4, 4)
+             Y <- substr(grid.100m[,grid.column], 7, 7)
+             temp <- data.frame(main, X, Y, stringsAsFactors=FALSE)
+             temp$id <- 1:nrow(temp)
+             temp <- merge(temp, dinty.letters)
+             temp <- temp[order(temp$id),]
+             grid.100m[,output.column] <- paste0(temp$main, temp$letter)
+             rm(temp)
+           }
            # section for 1km grids
-           main <- paste0(substr(grid.1km[,grid.column], 1, 3), substr(grid.1km[,grid.column], 5, 5))
-           X <- substr(grid.1km[,grid.column], 4, 4)
-           Y <- substr(grid.1km[,grid.column], 6, 6)
-           temp <- data.frame(main, X, Y, stringsAsFactors=FALSE)
-           temp$id <- 1:nrow(temp)
-           temp <- merge(temp, dinty.letters)
-           temp <- temp[order(temp$id),]
-           grid.1km[,output.column] <- paste0(temp$main, temp$letter)
-                      
+           if(nrow(grid.1km) > 0){
+             main <- paste0(substr(grid.1km[,grid.column], 1, 3), substr(grid.1km[,grid.column], 5, 5))
+             X <- substr(grid.1km[,grid.column], 4, 4)
+             Y <- substr(grid.1km[,grid.column], 6, 6)
+             temp <- data.frame(main, X, Y, stringsAsFactors=FALSE)
+             temp$id <- 1:nrow(temp)
+             temp <- merge(temp, dinty.letters)
+             temp <- temp[order(temp$id),]
+             grid.1km[,output.column] <- paste0(temp$main, temp$letter)
+             rm(temp)
+           }          
            # section for 2km grids
            grid.2km[,output.column] <- grid.2km[,grid.column]
            
