@@ -22,7 +22,9 @@ recs.out <- gridConvert(recs, "orig_grid", "grid_2km", "2km")
 # the desired grain.
 
 grid.shp <- readOGR("data", "grids") 
-# update to correct name of grid file
+# this loads the shape file containing the grid data update the first bit to the
+# location and the second bit to correct name of grid file (without the .shp
+# part)
 
 names(grid.shp) <- "grid_2km" 
 # make this the same as the output grid ref column from the gridConvert step
