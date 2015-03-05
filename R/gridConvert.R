@@ -5,7 +5,7 @@ gridConvert <- function(input.file, grid.column="location", output.column="conve
   }
   if(!grid.column %in% colnames(input.file)) stop ("Please specify the column containing the grid references")
   
-  load("~/Dropbox/dataQual/data/dinty.letters.rda")
+  load("data/dinty.letters.rda")
   input.file[,grid.column] <- as.character(input.file[,grid.column])
   grids <- input.file[,grid.column]
   
