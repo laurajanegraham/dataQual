@@ -8,10 +8,14 @@ setwd(xxx)
 source("R/calcUncertainty.R")
 source("R/gridConvert.R")
 
-recs <- read.csv("data/species_recs.csv") 
+recs <- read.csv("data/species_recs.csv", stringsAsFactors=FALSE) 
 # update to name and location of the .csv file - this inputs the shape file make
 # sure that you have filtered the records so that there are no records with a
 # grid cell size greater than the size you want to run the analysis at
+
+recs <- recs[nchar(recs$orig_grid) > 5,]
+# optional filter - this is set to filter out records where the grid cell
+# resolution is greater than 2 x 2 km. 
 
 recs.out <- gridConvert(recs, "orig_grid", "grid_2km", "2km") 
 # 1st argument: species data;
