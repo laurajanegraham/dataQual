@@ -48,7 +48,7 @@ calcUncertainty <- function(species.dat, grid.poly, species.col, grid.col, n.ran
   
   ### create the results for the output table ###
   results <- data.frame(grid_ref = NA, slope = NA, clench_a = NA, 
-                                    clench_b = NA, no_recs = NA, sp_rich = NA)
+                                    clench_b = NA, no_recs = NA, sp_rich = NA, confidence = NA)
   i <- 1
   
   for(grid in grid.list){
@@ -66,6 +66,7 @@ calcUncertainty <- function(species.dat, grid.poly, species.col, grid.col, n.ran
       results[i, 4] <- coef(clench)[2]
       results[i, 5] <- nrow(cc.list[[grid]])
       results[i, 6] <- max(cc.list[[grid]][,2])
+      results[i, 7] <- 1 - clench.slope(nrow(cc.list[[grid]]))
     } else{
       grid.dat <- species.dat[species.dat[,grid.col]==grid,species.col] 
       results[i, 1] <- grid
@@ -74,6 +75,7 @@ calcUncertainty <- function(species.dat, grid.poly, species.col, grid.col, n.ran
       results[i, 4] <- NA
       results[i, 5] <- length(grid.dat)
       results[i, 6] <- length(unique(grid.dat))
+      results[i, 7] <- NA
     }
 
     i <- i + 1
