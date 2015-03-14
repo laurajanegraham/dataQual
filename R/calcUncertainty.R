@@ -84,7 +84,7 @@ calcUncertainty <- function(species.dat, grid.poly, species.col, grid.col, n.ran
     i <- i + 1
   }
   
-  grid.shp@data <- data.frame(grid.shp@data, results[match(grid.shp@data[,1], 
+  grid.shp@data <- data.frame(grid.shp@data, results[match(grid.shp@data[,grid.col], 
                                                            results[,1]),])
   
   output <- list(results=results, cc.list=cc.list, grid.shp=grid.shp)
