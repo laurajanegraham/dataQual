@@ -29,20 +29,22 @@ calcUncertainty <- function(species.dat, grid.poly, species.col, grid.col, n.ran
   cc.list <- list()
   
   for(grid in grid.list) {
-    grid.dat <- species.dat[species.dat[,grid.col]==grid,species.col] 
-    grid.res <- data.frame(NA, nrow=length(grid.dat), ncol=100)
-    if(length(grid.dat) >= no.species/2 && length(unique(grid.dat)) > 1) { # only calculate the slope for those with a sampling effort of records >= 2*species
-      for(i in 1:n.rand) {
-        # create n randomisations of the records list
-        grid.dat <- sample(grid.dat, size=length(grid.dat))
-        
-        # create number of species at 1, 2, 3, ....j records
-        for(j in 1:length(grid.dat)) {
-          grid.res[j, i] <- length(unique(grid.dat[1:j]))
-        }
-      }
+    grid.dat <- species.dat[species.dat[,grid.col]==grid, species.col] 
+    if(length(grid.dat) != length(unique(grid.dat)) && length(unique(grid.dat)) > 1) { # only calculate the slope for those with a sampling effort of records >= 2*species
+      grid.iters <- rep(data.frame(species=grid.dat), 100) 
+      grid.rand <- lapply(grid.iters, function(x) { 
+        data.frame(species=sample(x, size=length(x)))
+      })
       
-      cc.list[[grid]] <- data.frame(records = 1:length(grid.dat), mean.species = rowMeans(grid.res))
+      grid.res <- lapply(grid.rand, function(x) {
+        mutate(x, first.appearance = !duplicated(x$species)
+               ,cumsum = cumsum(first.appearance)
+        ) %>%
+          select(cumsum)
+      })
+      
+      grid.res <- do.call("cbind", grid.res)
+      cc.list[[grid]] <- data.frame(records = 1:nrow(grid.res), mean.species = rowMeans(grid.res))
     }
   }
   
@@ -53,8 +55,9 @@ calcUncertainty <- function(species.dat, grid.poly, species.col, grid.col, n.ran
   
   for(grid in grid.list){
     if(grid %in% names(cc.list)){
+      control <- nls.control(minFactor = 1/1000000)
       clench <- nls(mean.species~(a*records)/(1 + b*records), data=cc.list[[grid]], 
-                    start = list(a=1, b=1))
+                    start = list(a=1, b=1), control)
       
       clench.slope <- function(x) {
         coef(clench)[1]/(coef(clench)[2]^2*x^2 + 2*coef(clench)[2]*x + 1)
