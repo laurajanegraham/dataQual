@@ -10,12 +10,13 @@ gridConvert <- function(input.file, grid.column="location", output.column="conve
   grids <- input.file[,grid.column]
   
   # get grids into the correct grain
-  grid.1m <- input.file[which(nchar(grids)==12),]
-  grid.10m <- input.file[which(nchar(grids)==10),]
-  grid.100m <- input.file[which(nchar(grids)==8),]
-  grid.1km <- input.file[which(nchar(grids)==6),]
-  grid.2km <- input.file[which(nchar(grids)==5),]
-  grid.10km <- input.file[which(nchar(grids)==4),]
+  grid.1m <- subset(input.file, nchar(grids)==12) 
+  grid.10m <- subset(input.file, nchar(grids)==10) 
+  grid.100m <- subset(input.file, nchar(grids)==8) 
+  grid.1km <- subset(input.file, nchar(grids)==6) 
+  grid.2km <- subset(input.file, nchar(grids)==5) 
+  grid.10km <- subset(input.file, nchar(grids)==4) 
+  
   
   
   switch(output.grain, # depending on the output grain required, different approach is taken
